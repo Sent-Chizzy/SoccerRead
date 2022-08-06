@@ -1,0 +1,61 @@
+﻿@model IEnumerable<SoccerRead.Models.Post>
+@{
+    ViewData["Title"] = "Liverpool News";
+}
+
+@{
+}
+
+
+<section>
+    <div>
+        <div>
+            <div class="col-12">
+                <h2>Latest Anfield Related Posts</h2>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-transparent p-0">
+                        <li class="breadcrumb-item font-weight-bold"><a asp-action="Index" asp-controller="Home" class="text-dark">Home Page </a></li>
+                        <li class="breadcrumb-item font-weight-bold active text-primary" aria-current="page"> Latest Post</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<div>
+    <span>Everything Liverpool News</span>
+</div>
+<div>
+    <div>
+        <div>
+            <h3>
+                Best Sports Blog
+                <br /><small>AnfieldRead @DateTime.Now.Year</small>
+            </h3>
+            <hr />
+        </div>
+        <div class="card card-4 mt-5">
+            <div class="thumbnail-area">
+                @foreach(var post in Model)
+                {
+                    var image_path = $"/content/blog/{post.Image}";
+                    <img src="@image_path" asp-append-version="true"/>
+
+                    <div class="card">
+                        <div class="card-header">
+                            Post Id: @post.Id
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@post.Title</h5>
+                            <p class="card-text">
+                                @{ var desc = post.Description;}
+                                @desc.Substring(0, 6)...
+                            </p>
+                            <a asp-action="Detail" asp-controller="Post" asp-route-id="@post.Id" class="btn btn-primary">Read More</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

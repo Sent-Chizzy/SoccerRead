@@ -1,0 +1,62 @@
+﻿@model SoccerRead.ViewModels.PostViewModel
+@{
+}
+
+@{
+    var title = "Create Post";
+}
+<div class="container-fluid">
+    <div>
+        <form asp-controller="Post" method="post" asp-action="Edit" enctype="multipart/form-data">
+
+            @if (Model.Id != 0)
+            {
+                title = "Edit Post";
+            }
+            <h2>@title</h2>
+            <input asp-for="Id" type="hidden" />
+            <div class="form-group">
+                <label>Title</label>
+                <input class="form-control" asp-for="Title" />
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <input class="form-control" asp-for="Description" />
+            </div>
+            <div class="form-group">
+                <label>Tags</label>
+                <input class="form-control" asp-for="Tags" />
+            </div>
+            <div class="form-group">
+                <label>Category</label>
+                <select class="form-control" asp-for="Category">
+                    <option value="">--Select Option--</option>
+                    <option value="Transfer-News">Transfer News</option>
+                    <option value="Match-LineUp">Match LineUp/Formation</option>
+                    <option value="Players-Performance">Players Performance</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Body</label>
+                <textarea class="form-control" asp-for="Body"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Image</label>
+                <input class="btn btn-info" asp-for="Image" />
+            </div>
+            <div class="form-control row">
+                <div class="col-md-8 offset-4">
+                    <div class="row">
+                        <div class="col">
+                            <button type="submit" class="btn btn-primary form-control">Create</button>
+                        </div>
+                        <div class="col">
+                            <a asp-action="Index" class="btn btn-success form-control">Back to List</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
