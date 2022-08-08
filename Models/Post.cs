@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SoccerRead.Models.Comments;
+using SoccerRead.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,5 +27,6 @@ namespace SoccerRead.Models
         public string Tags { get; set; } 
         public string Category { get; set; } 
         public DateTime Created { get; set; }
+        public List<MainComment> MainComments { get; set; }
     }
 }

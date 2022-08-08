@@ -2,6 +2,7 @@
 using SoccerRead.Data.FileManager;
 using SoccerRead.Interfaces;
 using SoccerRead.Models;
+using SoccerRead.Models.Comments;
 using SoccerRead.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -20,9 +21,12 @@ namespace SoccerRead.Controllers
             _repo = repo;
             _fileManager = fileManager;
         }
-        public IActionResult Index()
+        public IActionResult Index(int pageNumber, string category)
         {
-            var posts = _repo.GetAllPost();
+            if (pageNumber < 1)
+                return RedirectToAction("Index", new { pageNumber = 1, category });
+
+            var posts = _repo.GetAllPost(pageNumber, category);
             return View(posts);
         }
         public IActionResult Detail(int id)
@@ -84,6 +88,39 @@ namespace SoccerRead.Controllers
             {
                 return View(post);
             }
+        }
+
+        [HttpPost]  
+        public async Task<IActionResult> Comment(CommentViewModel vm)
+        {
+            if(!ModelState.IsValid)
+                return RedirectToAction("Post", new { id = vm.PostId });
+
+            var post = _repo.GetPost(vm.PostId);
+
+            if(vm.MainCommentId ==0)
+            {
+                post.MainComments = post.MainComments ?? new List<MainComment>();
+
+                post.MainComments.Add(new MainComment
+                {
+                    Message = vm.Message,
+                    Created = DateTime.Now
+                });
+                _repo.UpdatePost(post);
+            }
+            else
+            {
+                var comment = new SubComment
+                {
+                    MainCommentId = vm.MainCommentId,
+                    Message = vm.Message,
+                    Created = DateTime.Now,
+                };
+                _repo.AddSubComment(comment);
+            }
+            await _repo.SaveChangesAsync();
+            return RedirectToAction("Detail", new { id = vm.PostId });
         }
     }
 }

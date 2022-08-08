@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SoccerRead.Models.Post>
+﻿@model SoccerRead.ViewModels.IndexViewModel
 @{
     ViewData["Title"] = "Liverpool News";
 }
@@ -36,10 +36,10 @@
         </div>
         <div class="card card-4 mt-5">
             <div class="thumbnail-area">
-                @foreach(var post in Model)
+                @foreach(var post in Model.Posts)
                 {
                     var image_path = $"/content/blog/{post.Image}";
-                    <img src="@image_path" asp-append-version="true"/>
+                    <img src="@image_path" asp-append-version="true" style="width:100%"/>
 
                     <div class="card">
                         <div class="card-header">
@@ -55,6 +55,19 @@
                         </div>
                     </div>
                 }
+
+                @if(Model.PageNumber > 1) 
+                { 
+                    <a class="btn btn-info" asp-action="Index" asp-controller="Post" asp-route-category="@Model.Category"
+                       asp-route-pageNumber="@(Model.PageNumber - 1)">Previous Page</a>
+                }
+
+                @if (Model.NextPage)
+                {
+                    <a class="btn btn-info" asp-action="Index" asp-controller="Post" asp-route-category="@Model.Category"
+                       asp-route-pageNumber="@(Model.PageNumber + 1)">Next Page</a>
+                }
+
             </div>
         </div>
     </div>
